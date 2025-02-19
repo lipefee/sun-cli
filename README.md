@@ -1,4 +1,4 @@
-# Weather Forecast Application
+# SUN CLI - Weather Forecast Application
 
 This is a simple Go application that fetches and displays weather forecast information from the WeatherAPI.
 
