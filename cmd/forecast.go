@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/fatih/color"
@@ -47,13 +48,21 @@ var forecastCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		q := "florianopolis"
+		d := 2
 		if len(os.Args) > 2 {
 			q = os.Args[2]
+
+			if len(os.Args) > 3 {
+				var err error
+				d, err = strconv.Atoi(os.Args[3])
+				if err != nil {
+					fmt.Println("Invalid number of days, using default value 1")
+					d = 1
+				}
+			}
 		}
 
-		fmt.Println("Forecast for", q)
-
-		res, err := http.Get("http://api.weatherapi.com/v1/forecast.json?key=c1c5f0d3c5b2468bb3010800251302&q=" + q + "&days=1&aqi=no&alert=no&lang=pt")
+		res, err := http.Get(fmt.Sprintf("http://api.weatherapi.com/v1/forecast.json?key=c1c5f0d3c5b2468bb3010800251302&q=%s&days=%v&aqi=no&alert=no&lang=pt", q, d))
 		if err != nil {
 			panic(err)
 		}
